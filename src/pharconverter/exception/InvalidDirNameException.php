@@ -16,6 +16,11 @@ namespace pharconverter\exception;
 
 use Exception;
 
+/**
+ * Thrown when sepecified directory name not found
+ *
+ * @package pharconverter\exception
+ */
 class InvalidDirNameException extends Exception {
 
 }

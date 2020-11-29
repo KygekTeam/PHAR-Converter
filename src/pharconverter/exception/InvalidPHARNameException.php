@@ -16,6 +16,11 @@ namespace pharconverter\exception;
 
 use Exception;
 
+/**
+ * Thrown when sepecified PHAR file name not found
+ *
+ * @package pharconverter\exception
+ */
 class InvalidPHARNameException extends Exception {
 
 }
