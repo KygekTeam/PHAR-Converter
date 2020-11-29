@@ -1,2 +1,3 @@
-# pharconverter
-A PHAR file converter CLI app written in PHP
+# PHAR-Converter
+
+Simple to use PHAR Converter utility written in PHP CLI
