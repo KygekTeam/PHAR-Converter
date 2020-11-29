@@ -31,7 +31,7 @@ cd PHAR-Converter
 
 ## Contributing
 
-We accept contributions! To contribute, please create a [pull request](https://github.com/KygekTeam/PHAR-Converter/pulls).
+We accept contributions! To contribute, please **fork the `dev` branch** and create a [pull request](https://github.com/KygekTeam/PHAR-Converter/pulls) **to the `dev` branch**. All pull requests to the `main` branch **will be closed immediately**.
 
 If you found any bugs or want to give suggestions/feedbacks, please create an [issue](https://github.com/KygekTeam/PHAR-Converter/issues).
 
