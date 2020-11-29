@@ -17,6 +17,8 @@ To use PHAR Converter, you need Git installed. Currently, PHAR Converter only su
 
 ## Installation & Running First Time
 
+**WARNING:** PHAR Converter is currently under Beta. There may be some bugs and compatibility issues. Click [here](https://github.com/KygekTeam/PHAR-Converter#contributing) to read about contributing.
+
 1. Clone the repository recursively using Git
 ```
 git clone --recursive https://github.com/KygekTeam/PHAR-Converter
