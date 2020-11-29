@@ -1,0 +1,21 @@
+---
+# ==================== #
+# PHAR Converter Config File
+# Copyright (C) 2020 KygekTeam
+# GitHub: https://github.com/KygekTeam
+# ==================== #
+
+# Whether to compress PHAR when converting directories to PHAR
+# Currently available compression methods: gzip, bzip2
+# Set to false to disable
+compress: false
+
+# Whether to delete old PHAR/directory after converting (true/false)
+delete-old-files: false
+
+########################
+
+# Internal use only!
+# Don't change if you don't know what you are doing!
+config-version: "1.0"
+...
