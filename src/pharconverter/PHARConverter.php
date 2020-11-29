@@ -89,9 +89,8 @@ namespace pharconverter {
             $convert->toPhar($dirname);
         } catch (InvalidDirNameException $exception) {
             CLI::writeLine($exception->getMessage(), CLI::ERROR);
-        } finally {
-            terminate();
         }
+        terminate();
     }
 
     function terminate() {
