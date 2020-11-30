@@ -40,7 +40,7 @@ class Convert {
      */
     public function toDir(string $pharname) {
         if (!file_exists("./" . $pharname . ".phar")) {
-            throw new InvalidPHARNameException("Invalid PHAR file name!");
+            throw new InvalidPHARNameException("PHAR file " . $pharname . " was not found");
         } else {
             if (is_dir("./" . $pharname)) {
                 CLI::write("Another directory with the same name exists. Do you want to overwrite it? [Y/n]: ", CLI::WARNING);
@@ -76,7 +76,7 @@ class Convert {
      */
     public function toPhar(string $dirname) {
         if (!is_dir("./" . $dirname)) {
-            throw new InvalidDirNameException("Invalid directory name!");
+            throw new InvalidDirNameException("Directory " . $dirname . " was not found");
         } elseif (array_search($dirname, $this->unallowedDirs) !== false) {
             throw new InvalidDirNameException("Cannot convert " . $dirname . " directory to PHAR because it is an internal directory!");
         } else {
