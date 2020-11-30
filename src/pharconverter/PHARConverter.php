@@ -41,7 +41,7 @@ namespace pharconverter {
 
     CLI::writeLine(PHP_EOL . "PHAR Converter v" . VERSION);
     CLI::writeLine("Copyright (C) 2020 KygekTeam" . PHP_EOL);
-    if (IS_DEV) CLI::writeLine("WARNING! You are using Dev version. Major bugs and issues may be present. Use this version on your own risk." . PHP_EOL, CLI::WARNING);
+    if (IS_DEV) CLI::writeLine("You are using Dev version. Major bugs and issues may be present. Use this version on your own risk." . PHP_EOL, CLI::WARNING);
 
     CLI::writeLine(<<<EOT
     Modes:
@@ -72,6 +72,7 @@ namespace pharconverter {
     }
 
     function convertPharToDir(array $config) {
+        phartodir:
         CLI::write("Enter the PHAR file name that you want to convert: ", CLI::INFO);
         $pharname = CLI::read();
         try {
@@ -79,11 +80,13 @@ namespace pharconverter {
             $convert->toDir($pharname);
         } catch (InvalidPHARNameException $exception) {
             CLI::writeLine($exception->getMessage(), CLI::ERROR);
+            goto phartodir;
         }
         terminate();
     }
 
     function convertDirToPhar(array $config) {
+        dirtophar:
         CLI::write("Enter the directory name that you want to convert: ", CLI::INFO);
         $dirname = CLI::read();
         try {
@@ -91,6 +94,7 @@ namespace pharconverter {
             $convert->toPhar($dirname);
         } catch (InvalidDirNameException $exception) {
             CLI::writeLine($exception->getMessage(), CLI::ERROR);
+            goto dirtophar;
         }
         terminate();
     }
