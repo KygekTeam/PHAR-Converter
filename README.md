@@ -7,6 +7,7 @@ PHAR Converter is an easy to use program that converts PHAR files into directory
 ## Features
 
 - Several compression methods
+- Direct conversion
 - Configuration file
 - Easy to use
 - And much more!
@@ -34,6 +35,20 @@ git clone --recursive https://github.com/KygekTeam/PHAR-Converter
 cd PHAR-Converter
 ```
 3. Run `pharconverter` or open `pharconverter.cmd` directly to launch PHAR Converter!
+
+## Converting Directly
+
+To convert PHAR file or directory directly, PHAR Converter should be run from Command Prompt (`pharconverter`).
+
+Arguments:
+- `--mode="{MODE}"`: Specify the convert mode (Available modes: `ptd`, `phartodir`, `dtp`, `dirtophar`)
+- `--name="{NAME}"`: Specify the PHAR file/directory name to be converted
+
+Example:
+```
+pharconverter --mode=ptd --name=KygekJoinUI
+```
+Converts `KygekJoinUI.phar` to directory `KygekJoinUI`
 
 ## Contributing
 
