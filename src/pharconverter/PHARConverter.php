@@ -49,6 +49,17 @@ namespace pharconverter {
     $cfg->checkVersion();
     $config = $cfg->get();
 
+    if ($argc > 1) {
+        array_shift($argv);
+        foreach ($argv as $key => $arg) {
+            $argn = explode("=", str_replace(["--", "\""], "", $arg));
+            unset($argv[$key]);
+            $argv[$argn[0]] = $argn[1];
+        }
+        convertWithArgv($config, $argv["mode"] ?? "", $argv["name"] ?? null);
+        terminate();
+    }
+
     CLI::writeLine(<<<EOT
     Modes:
     - ptd: Converts PHAR to directory
@@ -97,6 +108,42 @@ namespace pharconverter {
             goto dirtophar;
         }
         terminate();
+    }
+
+    function convertWithArgv(array $config, string $mode, ?string $name = null) {
+        switch ($mode) {
+            case "ptd":
+            case "phartodir":
+                if (!isset($name)) {
+                    CLI::writeLine("Please specify PHAR file name!", CLI::ERROR);
+                    terminate();
+                }
+                try {
+                    $convert = new Convert($config);
+                    $convert->toDir($name);
+                } catch (InvalidPHARNameException $exception) {
+                    CLI::writeLine($exception->getMessage(), CLI::ERROR);
+                }
+                terminate();
+                break;
+            case "dtp":
+            case "dirtophar":
+                if (!isset($name)) {
+                    CLI::writeLine("Please specify directory name!", CLI::ERROR);
+                    terminate();
+                }
+                try {
+                    $convert = new Convert($config);
+                    $convert->toPhar($name);
+                } catch (InvalidDirNameException $exception) {
+                    CLI::writeLine($exception->getMessage(), CLI::ERROR);
+                }
+                terminate();
+                break;
+            default:
+                CLI::writeLine("Unknown convert mode!", CLI::ERROR);
+                terminate();
+        }
     }
 
     function terminate() {
