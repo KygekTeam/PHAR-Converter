@@ -26,6 +26,10 @@ class Convert {
     /** @var array */
     private $config;
 
+    // Internal directories that are not allowed to be converted
+    /** @var string[] */
+    private $unallowedDirs = ["bin", "src", "temp"];
+
     public function __construct(array $config) {
         $this->config = $config;
     }
@@ -73,6 +77,8 @@ class Convert {
     public function toPhar(string $dirname) {
         if (!is_dir("./" . $dirname)) {
             throw new InvalidDirNameException("Invalid directory name!");
+        } elseif (array_search($dirname, $this->unallowedDirs) !== false) {
+            throw new InvalidDirNameException("Cannot convert " . $dirname . " directory to PHAR because it is an internal directory!");
         } else {
             if (file_exists("./" . $dirname . ".phar")) {
                 CLI::write("Another PHAR file with the same name exists. Do you want to overwrite it? [Y/n]: ", CLI::WARNING);
