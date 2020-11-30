@@ -2,7 +2,7 @@
 
 [![Discord](https://img.shields.io/discord/735439472992321587.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/CXtqUZv)
 
-PHAR Converter is an easy to use program that converts PHAR files into directory and vice versa. PHAR Converter has been tested on PocketMine-MP.
+PHAR Converter is an easy to use program that converts PHAR files into directory and vice versa. PHAR Converter has been tested working to convert PocketMine-MP plugins.
 
 ## Features
 
@@ -13,11 +13,17 @@ PHAR Converter is an easy to use program that converts PHAR files into directory
 
 ## Requirements
 
-To use PHAR Converter, you need Git installed. Currently, PHAR Converter only supports Windows 64-bit.
+To use PHAR Converter, you need Git installed. Currently, PHAR Converter only supports Windows 64-bit. PHAR Converter may work on Windows 32-bit, however it has not been tested.
 
 ## Installation & Running First Time
 
 **WARNING:** PHAR Converter is currently under Beta. There may be some bugs and compatibility issues. Click [here](https://github.com/KygekTeam/PHAR-Converter#contributing) to read about contributing.
+
+### Downloading packaged source
+
+Packaged source is available to download directly [here](https://github.com/KygekTeam/PHAR-Converter/releases).
+
+### Cloning from source
 
 1. Clone the repository recursively using Git
 ```
