@@ -16,15 +16,23 @@ namespace pharconverter\utils;
 
 class CLI {
 
+    // WRITE MODES
     public const NONE = 0;
     public const INFO = 1;
     public const WARNING = 2;
     public const ERROR = 3;
 
+    /**
+     * @return string
+     */
     public static function read() : string {
         return trim((string) fgets(fopen("php://stdin", "r")));
     }
 
+    /**
+     * @param string $message
+     * @param int $mode
+     */
     public static function write(string $message, int $mode = self::NONE) {
         switch ($mode) {
             case self::INFO:
@@ -51,7 +59,11 @@ class CLI {
         echo $mode . $message;
     }
 
-    public static function writeLine(string $message, $mode = self::NONE) {
+    /**
+     * @param string $message
+     * @param int $mode
+     */
+    public static function writeLine(string $message, int $mode = self::NONE) {
         self::write($message . PHP_EOL, $mode);
     }
 

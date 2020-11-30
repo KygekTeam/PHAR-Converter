@@ -21,7 +21,7 @@ namespace pharconverter {
     use pharconverter\utils\CLI;
     use pharconverter\utils\Config;
 
-    const VERSION = "1.0.0-BETA2";
+    const VERSION = "1.0.0-BETA3";
     const IS_DEV = false;
 
     if (version_compare((string) PHP_MAJOR_VERSION, "7", "<") === -1) {
@@ -43,6 +43,23 @@ namespace pharconverter {
     CLI::writeLine("Copyright (C) 2020 KygekTeam" . PHP_EOL);
     if (IS_DEV) CLI::writeLine("You are using Dev version. Major bugs and issues may be present. Use this version on your own risk." . PHP_EOL, CLI::WARNING);
 
+    $cfg = new Config();
+    if (!$cfg->exists()) $cfg->copy();
+    $cfg->parse();
+    $cfg->checkVersion();
+    $config = $cfg->get();
+
+    if ($argc > 1) {
+        array_shift($argv);
+        foreach ($argv as $key => $arg) {
+            $argn = explode("=", str_replace(["--", "\""], "", $arg));
+            unset($argv[$key]);
+            $argv[$argn[0]] = $argn[1];
+        }
+        convertWithArgv($config, $argv["mode"] ?? "", $argv["name"] ?? null);
+        terminate();
+    }
+
     CLI::writeLine(<<<EOT
     Modes:
     - ptd: Converts PHAR to directory
@@ -51,12 +68,6 @@ namespace pharconverter {
     EOT . PHP_EOL);
     CLI::write("Enter the mode that you want [exit]: ", CLI::INFO);
     $mode = CLI::read();
-
-    $cfg = new Config();
-    if (!$cfg->exists()) $cfg->copy();
-    $cfg->parse();
-    $cfg->checkVersion();
-    $config = $cfg->get();
 
     switch (strtolower($mode)) {
         case "ptd":
@@ -97,6 +108,42 @@ namespace pharconverter {
             goto dirtophar;
         }
         terminate();
+    }
+
+    function convertWithArgv(array $config, string $mode, ?string $name = null) {
+        switch ($mode) {
+            case "ptd":
+            case "phartodir":
+                if (!isset($name)) {
+                    CLI::writeLine("Please specify PHAR file name!", CLI::ERROR);
+                    terminate();
+                }
+                try {
+                    $convert = new Convert($config);
+                    $convert->toDir($name);
+                } catch (InvalidPHARNameException $exception) {
+                    CLI::writeLine($exception->getMessage(), CLI::ERROR);
+                }
+                terminate();
+                break;
+            case "dtp":
+            case "dirtophar":
+                if (!isset($name)) {
+                    CLI::writeLine("Please specify directory name!", CLI::ERROR);
+                    terminate();
+                }
+                try {
+                    $convert = new Convert($config);
+                    $convert->toPhar($name);
+                } catch (InvalidDirNameException $exception) {
+                    CLI::writeLine($exception->getMessage(), CLI::ERROR);
+                }
+                terminate();
+                break;
+            default:
+                CLI::writeLine("Unknown convert mode!", CLI::ERROR);
+                terminate();
+        }
     }
 
     function terminate() {
