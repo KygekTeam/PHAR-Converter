@@ -43,6 +43,12 @@ namespace pharconverter {
     CLI::writeLine("Copyright (C) 2020 KygekTeam" . PHP_EOL);
     if (IS_DEV) CLI::writeLine("You are using Dev version. Major bugs and issues may be present. Use this version on your own risk." . PHP_EOL, CLI::WARNING);
 
+    $cfg = new Config();
+    if (!$cfg->exists()) $cfg->copy();
+    $cfg->parse();
+    $cfg->checkVersion();
+    $config = $cfg->get();
+
     CLI::writeLine(<<<EOT
     Modes:
     - ptd: Converts PHAR to directory
@@ -51,12 +57,6 @@ namespace pharconverter {
     EOT . PHP_EOL);
     CLI::write("Enter the mode that you want [exit]: ", CLI::INFO);
     $mode = CLI::read();
-
-    $cfg = new Config();
-    if (!$cfg->exists()) $cfg->copy();
-    $cfg->parse();
-    $cfg->checkVersion();
-    $config = $cfg->get();
 
     switch (strtolower($mode)) {
         case "ptd":
