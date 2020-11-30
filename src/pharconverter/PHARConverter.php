@@ -41,6 +41,7 @@ namespace pharconverter {
 
     CLI::writeLine(PHP_EOL . "PHAR Converter v" . VERSION);
     CLI::writeLine("Copyright (C) 2020 KygekTeam" . PHP_EOL);
+    if (IS_DEV) CLI::writeLine("WARNING! You are using Dev version. Major bugs and issues may be present. Use this version on your own risk." . PHP_EOL, CLI::WARNING);
 
     CLI::writeLine(<<<EOT
     Modes:
