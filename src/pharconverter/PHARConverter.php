@@ -21,7 +21,7 @@ namespace pharconverter {
     use pharconverter\utils\CLI;
     use pharconverter\utils\Config;
 
-    const VERSION = "1.0.0-BETA3";
+    const VERSION = "1.0.0-BETA4";
     const IS_DEV = false;
 
     if (version_compare((string) PHP_MAJOR_VERSION, "7", "<") === -1) {
