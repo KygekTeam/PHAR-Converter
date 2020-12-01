@@ -40,7 +40,7 @@ cd PHAR-Converter
 
 To convert PHAR file or directory directly, PHAR Converter should be run from Command Prompt (`pharconverter`).
 
-Arguments:
+Parameters:
 - `--mode="{MODE}"`: Specify the convert mode (Available modes: `ptd`, `phartodir`, `dtp`, `dirtophar`)
 - `--name="{NAME}"`: Specify the PHAR file/directory name to be converted
 
