@@ -18,8 +18,6 @@ use Phar;
 use pharconverter\exception\InvalidDirNameException;
 use pharconverter\exception\InvalidPHARNameException;
 use pharconverter\utils\CLI;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 
 class Convert {
 
@@ -140,21 +138,19 @@ class Convert {
         }
     }
 
-    public function deletePhar(string $pharpath) {
+    private function deletePhar(string $pharpath) {
         unlink($pharpath);
     }
 
-    public function deleteDir(string $dirpath) {
-        // Credits to alcuadrado (https://stackoverflow.com/questions/3349753/delete-directory-with-files-in-it)
-        $it = new RecursiveDirectoryIterator($dirpath, RecursiveDirectoryIterator::SKIP_DOTS);
-        $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
-
-        foreach ($files as $file) {
-            if ($file->isDir()) rmdir($file->getRealPath());
-            else unlink($file->getRealPath());
+    private function deleteDir(string $dir) {
+        foreach (array_diff(scandir($dir), [".", ".."]) as $content) {
+            if (is_dir($dir . "/" . $content)) {
+                $this->deleteDir($dir . "/" . $content);
+            } else {
+                unlink($dir . "/" . $content);
+            }
         }
-
-        rmdir($dirpath);
+        rmdir($dir);
     }
 
 }
