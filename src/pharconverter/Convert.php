@@ -18,8 +18,6 @@ use Phar;
 use pharconverter\exception\InvalidDirNameException;
 use pharconverter\exception\InvalidPHARNameException;
 use pharconverter\utils\CLI;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 
 class Convert {
 
@@ -39,14 +37,14 @@ class Convert {
      * @throws InvalidPHARNameException
      */
     public function toDir(string $pharname) {
-        if (!file_exists("./" . $pharname . ".phar")) {
-            throw new InvalidPHARNameException("PHAR file " . $pharname . " was not found");
+        if (!file_exists($pharname . ".phar")) {
+            throw new InvalidPHARNameException("PHAR file " . $pharname . ".phar was not found");
         } else {
-            if (is_dir("./" . $pharname)) {
+            if (is_dir($pharname)) {
                 CLI::write("Another directory with the same name exists. Do you want to overwrite it? [Y/n]: ", CLI::WARNING);
                 $read = strtolower(CLI::read());
                 if ($read == "n" || $read == "no") return;
-                $this->deleteDir("./" . $pharname);
+                $this->deleteDir($pharname);
             }
 
             CLI::write("Converting " . $pharname . ".phar to directory...", CLI::INFO);
@@ -54,19 +52,20 @@ class Convert {
             if (!is_dir("./temp")) {
                 mkdir("./temp"); // Creates a new directory for temporary files if not exists
             }
-            copy("./" . $pharname . ".phar", "./temp/" . $pharname . ".phar");
+            $phar = basename($pharname);
+            copy($pharname . ".phar", "./temp/" . $phar . ".phar");
 
-            $phar = new Phar("./temp/" . $pharname . ".phar");
+            $phar = new Phar("./temp/" . $phar . ".phar");
             $phar2 = $phar->convertToExecutable(Phar::TAR, Phar::NONE);
-            $phar2->extractTo("./" . $pharname, null, true);
+            $phar2->extractTo($pharname, null, true);
 
-            unlink("./temp/" . $pharname . ".phar.tar");
-            unlink("./temp/" . $pharname . ".phar");
+            unlink("./temp/" . basename($pharname) . ".phar.tar");
+            unlink("./temp/" . basename($pharname) . ".phar");
 
-            if ($this->config["delete-old-files"]) $this->deletePhar("./" . $pharname . ".phar");
+            if ($this->config["delete-old-files"]) $this->deletePhar($pharname . ".phar");
 
             CLI::writeLine("");
-            CLI::writeLine("Done! Your converted directory is located at " . realpath("./" . $pharname), CLI::INFO);
+            CLI::writeLine("Done! Your converted directory is located at " . realpath($pharname), CLI::INFO);
         }
     }
 
@@ -75,16 +74,16 @@ class Convert {
      * @throws InvalidDirNameException
      */
     public function toPhar(string $dirname) {
-        if (!is_dir("./" . $dirname)) {
+        if (!is_dir($dirname)) {
             throw new InvalidDirNameException("Directory " . $dirname . " was not found");
         } elseif (array_search($dirname, $this->unallowedDirs) !== false) {
             throw new InvalidDirNameException("Cannot convert " . $dirname . " directory to PHAR because it is an internal directory!");
         } else {
-            if (file_exists("./" . $dirname . ".phar")) {
+            if (file_exists($dirname . ".phar")) {
                 CLI::write("Another PHAR file with the same name exists. Do you want to overwrite it? [Y/n]: ", CLI::WARNING);
                 $read = strtolower(CLI::read());
                 if ($read == "n" || $read == "no") return;
-                $this->deletePhar("./" . $dirname . ".phar");
+                $this->deletePhar($dirname . ".phar");
             }
 
             switch (strtolower((string) $this->config["compress"])) {
@@ -122,39 +121,38 @@ class Convert {
                 mkdir("./temp");
             }
 
-            $phar = new Phar("./temp/" . $dirname . ".phar");
-            $phar->buildFromDirectory("./" . $dirname);
+            $pharname = basename($dirname);
+            $phar = new Phar("./temp/" . $pharname . ".phar");
+            $phar->buildFromDirectory($dirname);
             if ($compress !== Phar::NONE) {
                 $phar->compress($compress);
-                copy("./temp/" . $dirname . ".phar." . $ext, "./temp/" . $dirname . ".phar");
-                unlink("./temp/" . $dirname . ".phar." . $ext);
+                copy("./temp/" . $pharname . ".phar." . $ext, "./temp/" . $pharname . ".phar");
+                unlink("./temp/" . $pharname . ".phar." . $ext);
             }
 
-            copy("./temp/" . $dirname . ".phar", "./" . $dirname . ".phar");
-            unlink("./temp/" . $dirname . ".phar");
+            copy("./temp/" . $pharname . ".phar", $dirname . ".phar");
+            unlink("./temp/" . $pharname . ".phar");
 
-            if ($this->config["delete-old-files"]) $this->deleteDir("./" . $dirname);
+            if ($this->config["delete-old-files"]) $this->deleteDir($dirname);
 
             CLI::writeLine("");
-            CLI::writeLine("Done! Your converted PHAR file is located at " . realpath("./" . $dirname . ".phar"), CLI::INFO);
+            CLI::writeLine("Done! Your converted PHAR file is located at " . realpath($dirname . ".phar"), CLI::INFO);
         }
     }
 
-    public function deletePhar(string $pharpath) {
+    private function deletePhar(string $pharpath) {
         unlink($pharpath);
     }
 
-    public function deleteDir(string $dirpath) {
-        // Credits to alcuadrado (https://stackoverflow.com/questions/3349753/delete-directory-with-files-in-it)
-        $it = new RecursiveDirectoryIterator($dirpath, RecursiveDirectoryIterator::SKIP_DOTS);
-        $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
-
-        foreach ($files as $file) {
-            if ($file->isDir()) rmdir($file->getRealPath());
-            else unlink($file->getRealPath());
+    private function deleteDir(string $dir) {
+        foreach (array_diff(scandir($dir), [".", ".."]) as $content) {
+            if (is_dir($dir . "/" . $content)) {
+                $this->deleteDir($dir . "/" . $content);
+            } else {
+                unlink($dir . "/" . $content);
+            }
         }
-
-        rmdir($dirpath);
+        rmdir($dir);
     }
 
 }
