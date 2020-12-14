@@ -66,6 +66,7 @@ namespace pharconverter {
     - dtp: Converts directory to PHAR
     - exit: Exit PHAR Converter
     EOT . PHP_EOL);
+    mode:
     CLI::write("Enter the mode that you want [exit]: ", CLI::INFO);
     $mode = CLI::read();
 
@@ -78,8 +79,13 @@ namespace pharconverter {
         case "dirtophar":
             convertDirToPhar($config);
             break;
-        default:
+        case "exit":
+        case "":
             terminate();
+            break;
+        default:
+            CLI::writeLine("Unknown mode. Please enter a correct mode.", CLI::WARNING);
+            goto mode;
     }
 
     function convertPharToDir(array $config) {
