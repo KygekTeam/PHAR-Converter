@@ -22,7 +22,7 @@ namespace pharconverter {
     use pharconverter\utils\Config;
 
     const VERSION = "1.0.0-BETA5";
-    const IS_DEV = true;
+    const IS_DEV = false;
 
     if (version_compare((string) PHP_MAJOR_VERSION, "7", "<") === -1) {
         CLI::writeLine("You're using PHP below version 7. Please use our provided PHP binary.", CLI::ERROR);

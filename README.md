@@ -8,6 +8,7 @@ PHAR Converter is an easy to use program that converts PHAR files into directory
 
 - Several compression methods
 - Direct conversion
+- Environment variable support
 - Configuration file
 - Easy to use
 - And much more!
@@ -49,6 +50,14 @@ Example:
 pharconverter --mode=ptd --name=KygekJoinUI
 ```
 Converts `KygekJoinUI.phar` to directory `KygekJoinUI`
+
+## Converting via Environment Variable
+
+To use PHAR Converter via environment variable, you need to add the PHAR Converter directory root to `Settings > System > About > Advanced System Settings > Environment Variables > System Variables > Path`.
+
+Please note that you need to specify full PHAR/directory path that you want to convert if you use PHAR Converter via environment variable.
+
+**Example:** Use `C:\Something.phar` instead of directly `Something.phar`.
 
 ## Contributing
 
