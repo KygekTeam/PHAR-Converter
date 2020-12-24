@@ -1,6 +1,6 @@
 # PHAR Converter
 
-[![HitCount](http://hits.dwyl.com/KygekTeam/PHAR-Converter.svg)](http://hits.dwyl.com/KygekTeam/PHAR-Converter)
+[![HitCount](http://hits.dwyl.com/KygekTeam/PHAR-Converter.svg?)](http://hits.dwyl.com/KygekTeam/PHAR-Converter?)
 [![Discord](https://img.shields.io/discord/735439472992321587.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/CXtqUZv)
 
 PHAR Converter is an easy to use program that converts PHAR files into directory and vice versa. PHAR Converter has been tested to convert PocketMine-MP plugins.
